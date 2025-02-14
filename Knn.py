@@ -13,6 +13,7 @@
 import pandas as pd
 import numpy as np
 import pywt
+import matplotlib.pyplot as plt
 
 from aeon.datasets import load_classification
 from aeon.datasets.tsc_datasets import univariate_equal_length
@@ -190,4 +191,36 @@ for dataset_name in univariate_equal_length:
     print(f"Acurácia {dataset_name}: {accuracy}")
     
 accuracy_df_sax = pd.DataFrame(accuracy_data)
+# %%
+# Plot das figuras utilizadas na dissertação.
+
+features_train, features_test, target_train, target_test = load_data('BirdChicken')
+X_train_fft, X_test_fft = apply_fft(features_train, features_test)
+
+# %%
+#Série temporal no dominio temporal.
+plt.figure(figsize=(10,5), dpi=300)
+plt.plot(features_train[1], color='blue', linestyle='-', linewidth=3, alpha=0.8, label='Série Temporal')
+plt.title("Série Temporal - Bird/Chicken", fontsize=14, fontweight="bold")
+plt.xlabel("Tempo de observação", fontsize=12)
+plt.ylabel("Valores da classe", fontsize=12)
+
+plt.grid(True, linestyle='--', alpha=0.6)
+plt.legend(fontsize=12, loc='best')
+
+plt.show()
+plt.savefig('tsserie_temporal.png', dpi=300, bbox_inches='tight')
+# %%
+#Série temporal em uma diferente representação.
+plt.figure(figsize=(10,5), dpi=300)
+plt.plot(X_train_fft[2], color='tab:red', linestyle='-', linewidth=3, alpha=0.8, label='Frequências da série temporal')
+plt.title("Domínio de frequência - Bird/Chicken", fontsize=14, fontweight="bold")
+plt.xlabel("Tempo de observação", fontsize=12)
+plt.ylabel("Valores da classe", fontsize=12)
+
+plt.grid(True, linestyle='--', alpha=0.6)
+plt.legend(fontsize=12, loc='best')
+plt.savefig('frequencia_serie_temporal.png', dpi=300, bbox_inches='tight')
+
+
 # %%
